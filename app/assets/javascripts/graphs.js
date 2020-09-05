@@ -7,6 +7,33 @@ document.addEventListener("turbolinks:load", () => {
   const START_DATE = convertDate(gon.weight_records[0].date);
   const END_DATE = convertDate(
     gon.weight_records[gon.weight_records.length - 1].date
+    flatpickr.localize(flatpickr.l10ns.ja)
+
+    const drawGraphForPeriod = () => {
+        let from = convertDate(document.getElementById('start-calendar').value)
+        let to = convertDate(document.getElementById('end-calendar').value)
+
+        if (from > to) {
+            alert('終了日は開始日以降の日付に設定して下さい')
+        } else {
+            drawGraph(from, to)
+        }
+    }
+
+    const periodCalendarOption = {
+        // スマートフォンでもカレンダーに「flatpickr」を使用
+        disableMobile: true,
+        // 選択できる期間を設定
+        minDate: START_DATE,
+        maxDate: END_DATE,
+
+        // 日付選択後のイベント
+        onChange: drawGraphForPeriod
+    }
+
+    // カレンダー
+    const startCalendarFlatpickr = flatpickr('#start-calendar', periodCalendarOption)
+    const endCalendarFlatpickr = flatpickr('#end-calendar', periodCalendarOption)
   );
   // '2020-01-12'のような文字列から，Javascriptの日付オブジェクトを取得する関数
   // setHoursを使用しないと，時差の影響で0時にならないため注意！
@@ -47,7 +74,7 @@ document.addEventListener("turbolinks:load", () => {
   const drawGraph = (from, to) => {
     // from から to までの期間のデータに絞る
     let records = gon.weight_records.filter((record) => {
-      let date = convertDate(record.date);
+    let date = convertDate(record.date);
       return from <= date && date <= to;
     });
 
@@ -62,8 +89,8 @@ document.addEventListener("turbolinks:load", () => {
     let weights = records.map((record) => record.weight);
 
     let weightData = {
-      labels: dates,
-      datasets: [
+      　labels: dates,
+      　datasets: [
         {
           label: "体重(kg)",
           data: weights,
@@ -107,6 +134,9 @@ document.addEventListener("turbolinks:load", () => {
     from = maxDate(from, START_DATE);
     let to = minDate(TODAY, END_DATE);
     drawGraph(from, to);
+    // フォームの開始日・終了日を変更する
+    startCalendarFlatpickr.setDate(from)
+    endCalendarFlatpickr.setDate(to)
   };
 
   // 過去◯週間のグラフを描くボタン
