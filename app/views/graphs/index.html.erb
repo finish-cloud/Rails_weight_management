@@ -1,9 +1,21 @@
 <%= Gon::Base.render_data %>
+<%= link_to 'ゲストログイン（閲覧用）', users_guest_sign_in_path, method: :post, class:"btn btn-warning btn-block my-4" %>
+<div class="row">
+    <div class="col-6">
+        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#new-modal">
+            新規登録
+        </button>
+    </div>
+    <div class="col-6">
+        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#edit-modal">
+            記録の修正
+        </button>
+    </div>
+</div>
 
 <div class="row no-gutters">
     <div class="input-group col-sm-6 pr-sm-3 mt-3">
         <div class="input-group-prepend">
-
             <span class="input-group-text">開始</span>
         </div>
         <input type="text" id="start-calendar" class="form-control bg-white text-center">
@@ -31,6 +43,11 @@
         <input type="button" value="過去３ヶ月" id="three-months-button" class="btn btn-success btn-block mt-3">
     </div>
 </div>
+
+
+
 <!-- ********** 以上を追加 ********** -->
 <!-- ********** 次にクラスを追加 ********** -->
 <canvas id="chart-weight" class="mt-5"></canvas>
+<%= render 'modal', action: 'new', title: '新規登録' %>
+<%= render 'modal', action: 'edit', title: '修正' %>
