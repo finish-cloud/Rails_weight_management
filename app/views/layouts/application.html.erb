@@ -32,6 +32,7 @@
     <%= render 'shared/flash_messages' %>
     <% end %>
     <div class="graph-container">
+        <%= link_to 'ゲストログイン（閲覧用）', users_guest_sign_in_path, method: :post, class:"btn btn-warning btn-block my-4"%>
         <%= yield %>
     </div>
 </body>
